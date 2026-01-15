@@ -1,0 +1,3 @@
+#!/bin/bash
+samtools merge -o ${OUTDIR}/${FULLSMID}.merged.aln.srt.bam ${INDIR}/*.aln.srt.bam \
+&& rm ${INDIR}/*.aln.srt.bam
