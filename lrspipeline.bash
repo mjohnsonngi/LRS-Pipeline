@@ -68,7 +68,7 @@ bsub -g ${JOB_GROUP_ALIGN} \
 
 bsub -g ${JOB_GROUP_ALIGN} \
     -J ${JOBNAME}-alignmerge \
-    -w "(done(\"${JOBNAME}-align\")" \
+    -w "done(\"${JOBNAME}-align\")" \
     -n 1 \
     -Ne \
     -sp ${PRIORITY_ALIGN} \
@@ -80,7 +80,7 @@ bsub -g ${JOB_GROUP_ALIGN} \
 
 bsub -g ${JOB_GROUP} \
     -J ${JOBNAME}-deepvariant \
-    -w "(done(\"${JOBNAME}-alignmerge\")" \
+    -w "done(\"${JOBNAME}-alignmerge\")" \
     -n 8 \
     -Ne \
     -sp ${PRIORITY_DV} \
@@ -92,7 +92,7 @@ bsub -g ${JOB_GROUP} \
 
 bsub -g ${JOB_GROUP} \
     -J ${JOBNAME}-margin \
-    -w "(done(\"${JOBNAME}-deepvariant\")" \
+    -w "done(\"${JOBNAME}-deepvariant\")" \
     -n 8 \
     -Ne \
     -sp ${PRIORITY_MARGIN} \
@@ -104,7 +104,7 @@ bsub -g ${JOB_GROUP} \
 
 bsub -g ${JOB_GROUP} \
     -J ${JOBNAME}-sniffles \
-    -w "(done(\"${JOBNAME}-alignmerge\")" \
+    -w "done(\"${JOBNAME}-alignmerge\")" \
     -n 8 \
     -Ne \
     -sp ${PRIORITY_SNIF} \
@@ -116,7 +116,7 @@ bsub -g ${JOB_GROUP} \
 
 bsub -g ${JOB_GROUP} \
     -J ${JOBNAME}-mosdepth \
-    -w "(done(\"${JOBNAME}-alignmerge\")" \
+    -w "done(\"${JOBNAME}-alignmerge\")" \
     -n 1 \
     -Ne \
     -sp ${PRIORITY_QC} \
@@ -128,7 +128,7 @@ bsub -g ${JOB_GROUP} \
 
 bsub -g ${JOB_GROUP} \
     -J ${JOBNAME}-nanoplot \
-    -w "(done(\"${JOBNAME}-alignmerge\")" \
+    -w "done(\"${JOBNAME}-alignmerge\")" \
     -n 1 \
     -Ne \
     -sp ${PRIORITY_QC} \
