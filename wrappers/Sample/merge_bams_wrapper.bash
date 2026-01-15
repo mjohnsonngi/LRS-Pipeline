@@ -35,13 +35,12 @@ JOB_GROUP_QC="/${USER}/compute-${COMPUTE_USER}/qc"
 
 ## Begin Job submission loop
 # This checks if the submission was a workfile or a direct submission of a sample and adds them to an array
-if [[ -f $1 ]]; then FULLSMIDS=($(cat $1)); else FULLSMIDS=($@); fi
-for FULLSMID in ${FULLSMIDS[@]}; do
+export FULLSMID=$1
 
 export INDIR=/storage1/fs1/${STORAGE_USER}/Active/${USER}/c1in/${FULLSMID}
 export OUTDIR=/storage1/fs1/${STORAGE_USER}/Active/${USER}/c1out/${FULLSMID}
 [ ! -d $OUTDIR ] && mkdir $OUTDIR
-BAM="${INDIR}/${FULLSMID}.merged.aln.srt.bam"
+BAM="${OUTDIR}/${FULLSMID}.merged.aln.srt.bam"
 export LSF_DOCKER_VOLUMES="/storage1/fs1/${STORAGE_USER}:/storage1/fs1/${STORAGE_USER} \
 /scratch1/fs1/${SCRATCH_USER}:/scratch1/fs1/${SCRATCH_USER} \
 /storage1/fs1/${STORAGE_USER}/Active/${USER}/c1in/LRS/REF:/ref \
@@ -122,5 +121,3 @@ bsub -g ${JOB_GROUP} \
     -G compute-cruchagac \
     -q general \
     -a 'docker(mjohnsonngi/ont-qctools:1.0)' bash /scripts/make_nanoplots.bash $BAM
-
-done

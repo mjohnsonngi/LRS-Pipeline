@@ -1,5 +1,5 @@
 #!/bin/bash
-FASTQS=$@
+FASTQS=($@)
 FASTQ=${FASTQS[$((LSB_JOBINDEX - 1))]}
 echo ${FASTQS[@]}
 echo $FASTQ
