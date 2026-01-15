@@ -40,7 +40,7 @@ for FULLSMID in ${FULLSMIDS[@]}; do
 
 export INDIR=/storage1/fs1/${STORAGE_USER}/Active/${USER}/c1in/${FULLSMID}
 export OUTDIR=/storage1/fs1/${STORAGE_USER}/Active/${USER}/c1out/${FULLSMID}
-mkdir $OUTDIR
+[ ! -d $OUTDIR ] && mkdir $OUTDIR
 BAM="${INDIR}/${FULLSMID}.merged.aln.srt.bam"
 export LSF_DOCKER_VOLUMES="/storage1/fs1/${STORAGE_USER}:/storage1/fs1/${STORAGE_USER} \
 /scratch1/fs1/${SCRATCH_USER}:/scratch1/fs1/${SCRATCH_USER} \
@@ -60,7 +60,7 @@ bsub -g ${JOB_GROUP_ALIGN} \
     -n 1 \
     -Ne \
     -sp ${PRIORITY_ALIGN} \
-    -o ${LOGNAME}.align.%J.%i.out \
+    -o ${LOGNAME}.align.%J.%I.out \
     -R 'rusage[mem=20GB]' \
     -G compute-${COMPUTE_USER} \
     -q general \
