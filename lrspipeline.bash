@@ -54,7 +54,6 @@ LOGNAME="/scratch1/fs1/${SCRATCH_USER}/${USER}/c1out/logs/LRS/${FULLSMID}"
 
 export ALIGN_JOBS=$(find ${INDIR}/ -name "*.fastq.gz" | wc -l)
 export FASTQS=$(find ${INDIR}/ -name "*.fastq.gz")
-echo ${FASTQS[@]}
 
 bsub -g ${JOB_GROUP_ALIGN} \
     -J ${JOBNAME}-align[1-${ALIGN_JOBS}] \
