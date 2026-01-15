@@ -64,7 +64,7 @@ bsub -g ${JOB_GROUP_ALIGN} \
     -R 'rusage[mem=20GB]' \
     -G compute-${COMPUTE_USER} \
     -q general \
-    -a 'docker(mjohnsonngi/minimap2:1.0)' bash /scripts/align_fastq.bash 
+    -a 'docker(mjohnsonngi/minimap2:1.0)' bash /scripts/align_fastq.bash ${FASTQS[@]}
 
 bsub -g ${JOB_GROUP_ALIGN} \
     -J ${JOBNAME}-alignmerge \
