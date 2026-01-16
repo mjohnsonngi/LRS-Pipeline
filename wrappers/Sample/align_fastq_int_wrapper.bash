@@ -23,7 +23,11 @@ JOB_GROUP_ALIGN="/${USER}/compute-${COMPUTE_USER}/align"
 [[ -z "$(bjgroup | grep $JOB_GROUP_ALIGN)" ]] && bgadd -L 20 ${JOB_GROUP_ALIGN}
 
 ## Begin Job submission
-FASTQ=$1
+FULLSMID=$1
+INT=$2
+
+export FULLSMID=$FULLSMID
+export INDIR=/storage1/fs1/${STORAGE_USER}/Active/${USER}/c1in/${FULLSMID}
 
 export LSF_DOCKER_VOLUMES="/storage1/fs1/${STORAGE_USER}:/storage1/fs1/${STORAGE_USER} \
 /scratch1/fs1/${SCRATCH_USER}:/scratch1/fs1/${SCRATCH_USER} \
@@ -44,4 +48,4 @@ bsub -g ${JOB_GROUP_ALIGN} \
     -R 'rusage[mem=20GB]' \
     -G compute-${COMPUTE_USER} \
     -q general \
-    -a 'docker(mjohnsonngi/minimap2:1.0)' bash /scripts/align_fastq_nonpipe.bash $FASTQ
+    -a 'docker(mjohnsonngi/minimap2:1.0)' bash /scripts/align_fastq_rescue.bash $INT

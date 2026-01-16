@@ -1,8 +1,5 @@
 #!/bin/bash
-FASTQS=$(find ${INDIR}/ -name "*.fastq.gz" | sort)
-FASTQ=${FASTQS[$((LSB_JOBINDEX - 1))]}
-
-echo $FASTQ
+FASTQ=$1
 
 /opt/conda/bin/minimap2 \
     -a ${REF_FASTA}.mmi \

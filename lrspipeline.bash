@@ -53,7 +53,6 @@ JOBNAME="ngi-${USER}-${FULLSMID}"
 LOGNAME="/scratch1/fs1/${SCRATCH_USER}/${USER}/c1out/logs/LRS/${FULLSMID}"
 
 export ALIGN_JOBS=$(find ${INDIR}/ -name "*.fastq.gz" | wc -l)
-export FASTQS=$(find ${INDIR}/ -name "*.fastq.gz")
 
 bsub -g ${JOB_GROUP_ALIGN} \
     -J ${JOBNAME}-align[1-${ALIGN_JOBS}] \
@@ -64,7 +63,7 @@ bsub -g ${JOB_GROUP_ALIGN} \
     -R 'rusage[mem=20GB]' \
     -G compute-${COMPUTE_USER} \
     -q general \
-    -a 'docker(mjohnsonngi/minimap2:1.0)' bash /scripts/align_fastq.bash ${FASTQS[@]}
+    -a 'docker(mjohnsonngi/minimap2:1.0)' bash /scripts/align_fastq.bash
 
 bsub -g ${JOB_GROUP_ALIGN} \
     -J ${JOBNAME}-alignmerge \
