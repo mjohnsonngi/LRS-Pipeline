@@ -57,7 +57,7 @@ bsub -g ${JOB_GROUP} \
     -Ne \
     -sp ${PRIORITY_DV} \
     -o ${LOGNAME}.deepvariant.%J.out \
-    -R 'rusage[mem=40GB]' \
+    -R 'rusage[mem=80GB]' \
     -G compute-cruchagac \
     -q general \
     -a 'docker(mjohnsonngi/deepvariant:1.0)' bash /scripts/run_deepvariant_bam.bash $BAM

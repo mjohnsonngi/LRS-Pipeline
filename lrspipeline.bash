@@ -52,7 +52,7 @@ export REF_FASTA=${REF_DIR}/GCA_009914755.4_T2T-CHM13v2.0_genomic.chr.fna
 JOBNAME="ngi-${USER}-${FULLSMID}"
 LOGNAME="/scratch1/fs1/${SCRATCH_USER}/${USER}/c1out/logs/LRS/${FULLSMID}"
 
-export ALIGN_JOBS=$(find ${INDIR}/ -name "*.fastq.gz" | wc -l)
+export ALIGN_JOBS=$(find ${INDIR}/ -name "*.fastq.gz" | wc -l )
 
 bsub -g ${JOB_GROUP_ALIGN} \
     -J ${JOBNAME}-align[1-${ALIGN_JOBS}] \
@@ -84,7 +84,7 @@ bsub -g ${JOB_GROUP} \
     -Ne \
     -sp ${PRIORITY_DV} \
     -o ${LOGNAME}.deepvariant.%J.out \
-    -R 'rusage[mem=40GB]' \
+    -R 'rusage[mem=80GB]' \
     -G compute-cruchagac \
     -q general \
     -a 'docker(mjohnsonngi/deepvariant:1.0)' bash /scripts/run_deepvariant_bam.bash $BAM
