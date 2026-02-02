@@ -40,7 +40,7 @@ export FULLSMID=$1
 export INDIR=/storage1/fs1/${STORAGE_USER}/Active/${USER}/c1in/${FULLSMID}
 export OUTDIR=/storage1/fs1/${STORAGE_USER}/Active/${USER}/c1out/${FULLSMID}
 [ ! -d $OUTDIR ] && mkdir $OUTDIR
-BAM="${OUTDIR}/${FULLSMID}.merged.aln.srt.bam"
+BAM="${OUTDIR}/${FULLSMID}.aln.srt.bam"
 export LSF_DOCKER_VOLUMES="/storage1/fs1/${STORAGE_USER}:/storage1/fs1/${STORAGE_USER} \
 /scratch1/fs1/${SCRATCH_USER}:/scratch1/fs1/${SCRATCH_USER} \
 /storage1/fs1/${STORAGE_USER}/Active/${USER}/c1in/LRS/REF:/ref \
