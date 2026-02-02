@@ -1,4 +1,4 @@
-FROM google/deepvariant
+FROM google/deepvariant:1.10.0-beta
 
 ARG SAM_VER=1.15.1
 
