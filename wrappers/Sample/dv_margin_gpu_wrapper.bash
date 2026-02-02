@@ -51,20 +51,21 @@ export REF_FASTA=${REF_DIR}/GCA_009914755.4_T2T-CHM13v2.0_genomic.chr.fna
 JOBNAME="ngi-${USER}-${FULLSMID}"
 LOGNAME="/scratch1/fs1/${SCRATCH_USER}/${USER}/c1out/logs/LRS/${FULLSMID}"
 
-bsub -g ${JOB_GROUP} \
-    -J ${JOBNAME}-deepvariant \
+bsub -g ${JOB_GROUP}/gpu \
+    -J ${JOBNAME}-deepvariant-gpu \
     -n 8 \
     -Ne \
     -sp ${PRIORITY_DV} \
     -o ${LOGNAME}.deepvariant.%J.out \
-    -R 'rusage[mem=80GB]' \
+    -R 'select[gpuhost && mem>180GB] rusage[mem=180GB] span[hosts=1]' \
+    -gpu "num=1:gmem=12GB:j_exclusive=yes" \
     -G compute-cruchagac \
     -q general \
     -a 'docker(mjohnsonngi/deepvariant_gpu:1.0)' bash /scripts/run_deepvariant_gpu.bash $BAM
 
 bsub -g ${JOB_GROUP} \
     -J ${JOBNAME}-margin \
-    -w "done(\"${JOBNAME}-deepvariant\")" \
+    -w "done(\"${JOBNAME}-deepvariant-gpu\")" \
     -n 8 \
     -Ne \
     -sp ${PRIORITY_MARGIN} \
