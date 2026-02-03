@@ -27,9 +27,11 @@ SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 
 # 0.4 Define and create job groups
 JOB_GROUP="/${USER}/compute-${COMPUTE_USER}"
+JOB_GROUP_GPU="/${USER}/compute-${COMPUTE_USER}/gpu"
 JOB_GROUP_ALIGN="/${USER}/compute-${COMPUTE_USER}/align"
 JOB_GROUP_QC="/${USER}/compute-${COMPUTE_USER}/qc"
 [[ -z "$(bjgroup | grep $JOB_GROUP)" ]] && bgadd -L 300 ${JOB_GROUP}
+[[ -z "$(bjgroup | grep $JOB_GROUP_GPU)" ]] && bgadd -L 10 ${JOB_GROUP_GPU}
 [[ -z "$(bjgroup | grep $JOB_GROUP_ALIGN)" ]] && bgadd -L 20 ${JOB_GROUP_ALIGN}
 [[ -z "$(bjgroup | grep $JOB_GROUP_QC)" ]] && bgadd -L 20 ${JOB_GROUP_QC}
 
@@ -54,8 +56,20 @@ LOGNAME="/scratch1/fs1/${SCRATCH_USER}/${USER}/c1out/logs/LRS/${FULLSMID}"
 
 export ALIGN_JOBS=$(find ${INDIR}/ -name "*.fastq.gz" | wc -l )
 
+bsub -g ${JOB_GROUP_GPU} \
+    -J ${JOBNAME}-align-gpu \
+    -n 8 \
+    -Ne \
+    -sp ${PRIORITY_ALIGN} \
+    -o ${LOGNAME}.aligngpu.%J.out \
+    -R '{ select[gpuhost && mem>160GB] rusage[ngpus_physical=1:gmem=12GB, mem=160GB/job] span[hosts=1] } || { select[!gpuhost] rusage[mem=4GB/job] }@10' \
+-G compute-${COMPUTE_USER} \
+    -q general \
+    -a 'docker(mjohnsonngi/minimap2_gpu:1.0)' bash /scripts/minimap2_gpu.bash
+
 bsub -g ${JOB_GROUP_ALIGN} \
-    -J ${JOBNAME}-align[1-${ALIGN_JOBS}] \
+    -J ${JOBNAME}-align-cpu[1-${ALIGN_JOBS}] \
+    -w "exit(\"${JOBNAME}-align-gpu\")" \
     -n 1 \
     -Ne \
     -sp ${PRIORITY_ALIGN} \
@@ -67,7 +81,7 @@ bsub -g ${JOB_GROUP_ALIGN} \
 
 bsub -g ${JOB_GROUP_ALIGN} \
     -J ${JOBNAME}-alignmerge \
-    -w "done(\"${JOBNAME}-align\")" \
+    -w "done(\"${JOBNAME}-align-cpu\")" \
     -n 1 \
     -Ne \
     -sp ${PRIORITY_ALIGN} \
@@ -79,7 +93,7 @@ bsub -g ${JOB_GROUP_ALIGN} \
 
 bsub -g ${JOB_GROUP} \
     -J ${JOBNAME}-deepvariant \
-    -w "done(\"${JOBNAME}-alignmerge\")" \
+    -w "done(\"${JOBNAME}-alignmerge\") || done(\"${JOBNAME}-align-gpu\")" \
     -n 8 \
     -Ne \
     -sp ${PRIORITY_DV} \
@@ -103,7 +117,7 @@ bsub -g ${JOB_GROUP} \
 
 bsub -g ${JOB_GROUP} \
     -J ${JOBNAME}-sniffles \
-    -w "done(\"${JOBNAME}-alignmerge\")" \
+    -w "done(\"${JOBNAME}-alignmerge\") || done(\"${JOBNAME}-align-gpu\")" \
     -n 8 \
     -Ne \
     -sp ${PRIORITY_SNIF} \
@@ -115,7 +129,7 @@ bsub -g ${JOB_GROUP} \
 
 bsub -g ${JOB_GROUP} \
     -J ${JOBNAME}-mosdepth \
-    -w "done(\"${JOBNAME}-alignmerge\")" \
+    -w "done(\"${JOBNAME}-alignmerge\") || done(\"${JOBNAME}-align-gpu\")" \
     -n 1 \
     -Ne \
     -sp ${PRIORITY_QC} \
@@ -127,7 +141,7 @@ bsub -g ${JOB_GROUP} \
 
 bsub -g ${JOB_GROUP} \
     -J ${JOBNAME}-nanoplot \
-    -w "done(\"${JOBNAME}-alignmerge\")" \
+    -w "done(\"${JOBNAME}-alignmerge\") || done(\"${JOBNAME}-align-gpu\")" \
     -n 1 \
     -Ne \
     -sp ${PRIORITY_QC} \
