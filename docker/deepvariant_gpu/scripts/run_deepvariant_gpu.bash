@@ -7,6 +7,8 @@ done
 /usr/local/parabricks/pbrun deepvariant \
     --ref ${REF_FASTA} \
     --in-bam ${BAM} \
-    --out-variants ${BAM%.*}.vcf.gz \
+    --out-variants ${BAM%.*}.vcf \
     --num-gpus 1 \
-    --mode ont
+    --mode ont \
+&& gzip ${BAM%.*}.vcf \
+&& tabix ${BAM%.*}.vcf.gz
