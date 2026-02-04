@@ -144,6 +144,19 @@ bsub -g ${JOB_GROUP} \
     -q general \
     -a 'docker(mjohnsonngi/sniffles:1.0)' bash /scripts/run_sniffles_bam.bash $BAM
 
+# 3.2 Call tandem repeats with STRdust
+bsub -g ${JOB_GROUP} \
+    -J ${JOBNAME}-strdust \
+    -w "done(\"${JOBNAME}-alignmerge\") || done(\"${JOBNAME}-align-gpu\")" \
+    -n 8 \
+    -Ne \
+    -sp ${PRIORITY_SNIF} \
+    -o ${LOGNAME}.strdust.%J.out \
+    -R 'rusage[mem=40GB]' \
+    -G compute-cruchagac \
+    -q general \
+    -a 'docker(mjohnsonngi/strdust:1.0)' bash /scripts/run_strdust_bam.bash $BAM
+
 ## 4. QC
 # These jobs provide QC metrics for LRS bam files.
 # 4.1 Find coverage with mosdepth
