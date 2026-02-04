@@ -53,7 +53,7 @@ LOGNAME="/scratch1/fs1/${SCRATCH_USER}/${USER}/c1out/logs/LRS/${FULLSMID}"
 
 bsub -g ${JOB_GROUP} \
     -J ${JOBNAME}-deepvariant \
-    -n 8 \
+    -n 16 \
     -Ne \
     -sp ${PRIORITY_DV} \
     -o ${LOGNAME}.deepvariant.%J.out \

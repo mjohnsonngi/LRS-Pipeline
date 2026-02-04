@@ -107,7 +107,7 @@ bsub -g ${JOB_GROUP_ALIGN} \
 bsub -g ${JOB_GROUP} \
     -J ${JOBNAME}-deepvariant \
     -w "done(\"${JOBNAME}-alignmerge\") || done(\"${JOBNAME}-align-gpu\")" \
-    -n 8 \
+    -n 16 \
     -Ne \
     -sp ${PRIORITY_DV} \
     -o ${LOGNAME}.deepvariant.%J.out \
