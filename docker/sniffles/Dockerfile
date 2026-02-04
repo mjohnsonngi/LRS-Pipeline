@@ -6,6 +6,7 @@ RUN apt-get update && \
 	libz-dev \
 	libbz2-dev \
 	rsync \
+	tabix \
 	zlib1g-dev \
 	liblzma-dev \
 	libncurses5-dev \
