@@ -9,5 +9,5 @@ FASTQ=${FQARRAY[$((INT - 1))]}
     -a ${REF_FASTA}.mmi \
     -L \
     $FASTQ \
-    | samtools addreplacerg -r "ID:${FASTQ%.fastq.gz}" -r "SM:${FULLSMID}" \
+    | samtools addreplacerg -u -r "ID:${FASTQ%.fastq.gz}" -r "SM:${FULLSMID}" - \
     | samtools sort -O BAM -o ${FASTQ%.fastq.gz}.aln.srt.bam

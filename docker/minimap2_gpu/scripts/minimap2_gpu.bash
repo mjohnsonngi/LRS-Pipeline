@@ -1,5 +1,5 @@
 #!/bin/bash
-if [[ -z $CUDA_VISIBLE_DEVICES]]; then exit 66
+if [[ -z $CUDA_VISIBLE_DEVICES ]]; then exit 66; fi
 
 for VAR in $(printenv | grep CUDA_VISIBLE_DEVICES); do
 export ${VAR/CUDA/NVIDIA}
