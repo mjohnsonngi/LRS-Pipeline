@@ -7,7 +7,8 @@ STRdust-linux \
 	--support 3 \
 	--sample ${BAMBASE%%.*} \
 	--unphased \
+	-R /scripts/STRchive-disease-loci.T2T-chm13.longTR.bed \
 	${REF_FASTA} \
 	${BAM} \
-	| bgzip -c > ${BAM%.bam}.strdust.vcf.gz \
+	| bcftools sort -Oz -o ${BAM%.bam}.strdust.vcf.gz \
 	&& tabix ${BAM%.bam}.strdust.vcf.gz

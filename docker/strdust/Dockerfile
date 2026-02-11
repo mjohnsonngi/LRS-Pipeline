@@ -1,12 +1,14 @@
-FROM ubuntu:20.04
+FROM ubuntu:24.04
 
 RUN apt-get update && \
  	apt-get upgrade -y && \
 	apt-get install -y --no-install-recommends \
 	libz-dev \
 	libbz2-dev \
+	libc6 \
 	rsync \
 	wget \
+	bcftools \
 	tabix \
 	zlib1g-dev \
 	liblzma-dev \
@@ -16,7 +18,7 @@ RUN apt-get update && \
 	apt-get -y autoclean && \
 	apt-get -y autoremove
 
-RUN wget -P /usr/local/bin/ https://github.com/wdecoster/STRdust/releases/download/v0.14.0/STRdust-linux \
+RUN wget --no-check-certificate -P /usr/local/bin/ https://github.com/wdecoster/STRdust/releases/download/v0.14.0/STRdust-linux \
 && chmod +x /usr/local/bin/STRdust-linux
 
 COPY ./scripts/* /scripts/
