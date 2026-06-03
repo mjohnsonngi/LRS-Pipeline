@@ -3,7 +3,7 @@
 export COMPUTE_USER=fernandezv
 export SCRATCH_USER=cruchagac
 export STORAGE_USER=cruchagac
-export REF_DIR="/storage1/fs1/cruchagac/Active/matthew.j/c1in/LRS/REF"
+export REF_DIR="/storage1/fs1/cruchagac/Active/matthew.j/REF/LRS"
 
 ## Touch the references so that compute1 doesn't remove them
 find $REF_DIR -true -exec touch '{}' \;
@@ -51,7 +51,7 @@ export REF_FASTA=${REF_DIR}/GCA_009914755.4_T2T-CHM13v2.0_genomic.chr.fna
 # Set other variables for job submission
 export LSF_DOCKER_VOLUMES="/storage1/fs1/${STORAGE_USER}:/storage1/fs1/${STORAGE_USER} \
 /scratch1/fs1/${SCRATCH_USER}:/scratch1/fs1/${SCRATCH_USER} \
-/storage1/fs1/${STORAGE_USER}/Active/${USER}/c1in/LRS/REF:/ref \
+$REF_DIR:/ref \
 $HOME:$HOME"
 JOBNAME="ngi-${USER}-${FULLSMID}"
 LOGNAME="/scratch1/fs1/${SCRATCH_USER}/${USER}/c1out/logs/LRS/${FULLSMID}"
